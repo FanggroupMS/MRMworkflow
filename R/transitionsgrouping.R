@@ -119,17 +119,17 @@ get_random_result = function(dir_name, num, m, result_dir_name, t) {
   unlink(dir_name, recursive = TRUE)
 }
 
-execute = function () {
-  print("choose files input")
-  file = import(file.choose())
-  print("input n")  #number of transitions allowed in a RT group
-  n = as.numeric(readline())
-  print("input m")   #product ion value
-  m = readline()
-  print("input threshold")
-  t = readline()   #threshold in the method file
-  prepare_data(file, n, m, t)
-}
+# execute = function () {
+#   print("choose files input")
+#   file = import(file.choose())
+#   print("input n")  #number of transitions allowed in a RT group
+#   n = as.numeric(readline())
+#   print("input m")   #product ion value
+#   m = readline()
+#   print("input threshold")
+#   t = readline()   #threshold in the method file
+#   prepare_data(file, n, m, t)
+# }
 
 #run execute()
 # execute()
