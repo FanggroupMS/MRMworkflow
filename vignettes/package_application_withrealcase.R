@@ -11,7 +11,7 @@ lapply(packsneed, require, character.only = TRUE)
 #function param
 filedat <- list.files(path = 'dmrm/', pattern = ".mzML$", full.names = TRUE)
 pwid <- c(0.8,3)
-snthresh <- 10
+snthr <- 10
 MSRT <- read.csv("MS1_RT.csv", col.names = c('MS1','RT'))
 rtfile <- data.frame("row"=1:length(rt),"ms1"=MSRT$MS1, "predrt"=MSRT$RT)
 delrt <- 1.5
