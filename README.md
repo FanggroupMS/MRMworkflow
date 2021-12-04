@@ -2,7 +2,9 @@
 
 To Install from R console:
 
-```r
-install.packages("BiocManager")
-BiocManager::install("MRMworkflow")
-```
+````
+install.packages("devtools", dependencies=TRUE)
+library(devtools) 
+install_github("chunxuan98/MRMworkflow")
+library(MRMworkflow)
+````
