@@ -22,10 +22,10 @@ prediction <- function(input,b){
 }
 
 # load new data
-newinput <- read.csv('OH_newdata_predictionRT.csv')
-newsmilst <- newinput$smiles
-a <- newsmilst[1:5]
-newrt <- prediction(a,b='OH')
+# newinput <- read.csv('OH_newdata_predictionRT.csv')
+# newsmilst <- newinput$smiles
+# a <- newsmilst[1:5]
+# newrt <- prediction(a,b='OH')
 
 #define functions for molecular descriptors without preprocess
 getdesc_nopp <- function(input){
