@@ -1,6 +1,7 @@
 #get the rt prediction and the ie prediciton
 #get the function for risk socres weight
 #get the function for ms confidence scores weight
+
 #------------------------rt prediction module------import rt model--------------------
 #load all packages at once
 packsneed <- c('rcdk','rcdklibs','randomForest','leaps','caret','corrplot',
@@ -22,10 +23,10 @@ prediction <- function(input,b){
 }
 
 # load new data
-newinput <- read.csv('OH_newdata_predictionRT.csv')
-newsmilst <- newinput$smiles
-a <- newsmilst[1:5]
-newrt <- prediction(a,b='OH')
+# newinput <- read.csv('OH_newdata_predictionRT.csv')
+# newsmilst <- newinput$smiles
+# a <- newsmilst[1:5]
+# newrt <- prediction(a,b='OH')
 
 #define functions for molecular descriptors without preprocess
 getdesc_nopp <- function(input){
