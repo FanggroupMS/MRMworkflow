@@ -19,3 +19,6 @@ install.packages(c('xcms','magrittr','MSnbase','dplyr','tidyr',
                    'rcdk','rcdklibs','randomForest','leaps',
                    'caret','corrplot','mlr','Metrics','rio','hash'))
 ````
+
+
+This package requires R version 4.1.2.
