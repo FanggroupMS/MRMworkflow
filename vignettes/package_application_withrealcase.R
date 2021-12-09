@@ -2,7 +2,7 @@
 packsneed <- c('xcms','magrittr','MSnbase','dplyr','tidyr',
                'ggplot2','tidyverse','ggpubr','miceadds',
                'rcdk','rcdklibs','randomForest','leaps',
-               'caret','corrplot','mlr','Metrics','rio','hash')
+               'caret','corrplot','mlr','Metrics','rio','hash','EnhancedVolcano')
 lapply(packsneed, require, character.only = TRUE)
 
 #outside function, file import
@@ -19,6 +19,9 @@ group1 <- c(1:3)
 group2 <- c(4:5)
 peaksresult <- peaksdetect(filedat, rtfile,pwid, snthr, delrt, group1,group2)
 peaksresult
+volcanoplot(peaksresult)
+dev.copy(png,filename="volcano.png")
+dev.off ()
 
 #load new data for rt prediction  #done
 newinput <- read.csv('OH_newdata_predictionRT.csv')
