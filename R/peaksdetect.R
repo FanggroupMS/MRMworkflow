@@ -59,3 +59,15 @@ ttestpeaks <- function(df, grp1, grp2) {
   results$p.value
   return(results$p.value)
 }
+
+volcanoplot <- function(peaksresult) {
+  EnhancedVolcano(peaksresult,
+                  lab = rownames(peaksresult),
+                  x = 'foldchange',
+                  y = 'rawpvalue',
+                  FCcutoff = 0.5,
+                  pCutoff = 0.05,
+                  labSize = 3,
+                  drawConnectors = TRUE) + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+                                                 panel.background = element_blank(), axis.line = element_line(colour = "black"))
+}
