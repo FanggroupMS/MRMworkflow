@@ -18,6 +18,10 @@ install.packages(c('xcms','magrittr','MSnbase','dplyr','tidyr',
                    'ggplot2','tidyverse','ggpubr','miceadds',
                    'rcdk','rcdklibs','randomForest','leaps',
                    'caret','corrplot','mlr','Metrics','rio','hash'))
+                   
+if (!requireNamespace('BiocManager', quietly = TRUE))
+  install.packages('BiocManager')
+BiocManager::install('EnhancedVolcano')
 ````
 
 
