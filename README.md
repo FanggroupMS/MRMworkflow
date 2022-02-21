@@ -1,4 +1,4 @@
-# MRMworkflow
+# CILMRM-workflow
 
 To Install from R console:
 
