@@ -6,7 +6,7 @@ To Install from R console:
 install.packages("devtools", dependencies=TRUE)
 library(devtools) 
 
-install_github("YANGJJ93MS/MRMworkflow")
+install_github("YANGJJ93MS/CILMRM")
 library(CILMRM)
 ````
 
