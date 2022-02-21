@@ -6,8 +6,8 @@ To Install from R console:
 install.packages("devtools", dependencies=TRUE)
 library(devtools) 
 
-install_github("FanggroupMS/MRMworkflow")
-library(MRMworkflow)
+install_github("YANGJJ93MS/MRMworkflow")
+library(CILMRM)
 ````
 
 
