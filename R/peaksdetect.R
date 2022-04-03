@@ -50,9 +50,9 @@ peaksdetect <- function(filedat, rtfile,pwid, snthr, delrt, group1,group2){
   return(res1)
   }
 
-ttestpeaks <- function(df, grp1, grp2) {
-  x = df[grp1]
-  y = df[grp2]
+ttestpeaks <- function(df, group1, group2) {
+  x = df[group1]
+  y = df[group2]
   x = as.numeric(x)
   y = as.numeric(y)  
   results = t.test(x, y)
