@@ -2,17 +2,21 @@ library(rio)
 library(dplyr)
 library(hash)
 
-prepare_data = function(file, num, m, t) {
+#if compound is OH, deltams1 light=1, heavy =2
+#if compound is COOH, deltams1 light =1, heavy= 3
+#parameters: file= original transitions, num =, m =,
+transitiongroup = function(file, num, m) {
   # read data
   source_data = file
-  # + the H accurate mass
-  source_data = mutate(source_data, MS1 = MS1 + 1.0073)
+  # calculate the precursor M+H+ mass
+  source_data = mutate(source_data, MS1 = MS1 + 1.0073) 
+
   # round number upwords
   source_data = mutate(source_data, RTgroup=ceiling(RT), 
                        MSgroup=sprintf("%0.2f", ceiling(MS1 * 10) / 10))
-  #make a table so that for loop throgh files
+  #count the number of compounds with same MS1 mass
   table = count(source_data, MSgroup)
-  #find the number of export experiment settings files
+  #grouping compounds into n files (n = count of compounds with same MS1 mass)
   export_num = slice(table, which.max(table$n))
   #find the folder for storing output files
   time_now = round(as.numeric(as.POSIXct(Sys.time())))
@@ -24,11 +28,11 @@ prepare_data = function(file, num, m, t) {
   
   export(table, paste(result_dir_name, "/statistics.xlsx", sep = ""))
   build_intermediate_xlsx(source_data, table, export_num$n, num, dir_name, m, 
-                          result_dir_name, t)
+                          result_dir_name)
 }
 
 build_intermediate_xlsx = function(source_data, table, export_num, num, 
-                                   dir_name, m, result_dir_name, t) {
+                                   dir_name, m, result_dir_name) {
   #loop over every output files
   for (i in 1:as.numeric(export_num)) {
     #output data format
@@ -42,10 +46,10 @@ build_intermediate_xlsx = function(source_data, table, export_num, num,
     result = arrange(result, RTgroup)
     export(result, paste(dir_name, "/result", i, ".xlsx", sep = ""), which = "sheet1")
   }
-  get_random_result(dir_name, num, m, result_dir_name, t)
+  get_random_result(dir_name, num, m, result_dir_name)
 }
 
-format_export_data = function (path, i, data, m, sheet_name, t) {
+format_export_data = function (path, i, data, m, sheet_name) {
   data_length = dim(data)[1]
                     
   output = data.frame(
@@ -58,13 +62,12 @@ format_export_data = function (path, i, data, m, sheet_name, t) {
     "MS2 Res" = rep("Unit", data_length),
     "Primary" = rep("TRUE", data_length),
     "Trigger" = rep("FALSE", data_length) ,
-    "Threshold" = rep(t, data_length),
     "Ret Time (min)" = data$RT,
     "Delta Ret Time" = rep("2", data_length),
     "Fragmentor" = rep("166", data_length) ,
     "Collision Energy" = rep("12", data_length),
     "Cell Accelerator Voltage" = rep("4", data_length) ,
-    "Polarity" = rep("Negative", data_length),
+    "Polarity" = rep("Positive", data_length),
     "Trigger Entrance Delay (cycles)" = rep("0", data_length),
     "Trigger Delay (cycles)" = rep("0", data_length),
     "Trigger Window" = rep("0", data_length),
@@ -79,7 +82,7 @@ format_export_data = function (path, i, data, m, sheet_name, t) {
          which = sheet_name)
 }
 
-get_random_result = function(dir_name, num, m, result_dir_name, t) {
+get_random_result = function(dir_name, num, m, result_dir_name) {
   i = 1
   for (file in list.files(dir_name)) {
     print(paste("---processing", i, "files---"))
@@ -92,7 +95,7 @@ get_random_result = function(dir_name, num, m, result_dir_name, t) {
       filter(n > num) %>% mutate(left_count = n - num)
     if (dim(temp_table)[1] == 0) {
       # if no further match for the MS group, then continue the searching
-      format_export_data(result_dir_name, i, data, m, "sheet1", t)
+      format_export_data(result_dir_name, i, data, m, "sheet1")
       i = i + 1
       next
     }
@@ -100,36 +103,31 @@ get_random_result = function(dir_name, num, m, result_dir_name, t) {
     left_data = data_frame()
     names(left_data) = c("casrn", "smiles", "RT", "MW", "MS1", "RTgroup", "MSgroup")
     for (line in temp_table$RTgroup) {
-      # get table data. random take rows and delete rows out of size
+      # take tables for splitting, eliminate those not wanted
       left_num = filter(temp_table, RTgroup==line)$left_count
       RT_data = filter(data, RTgroup == line)
       left_data = rbind(left_data, RT_data[sample(nrow(RT_data), left_num, 
                                                   replace = F),])
     }
     data = setdiff(data, left_data)
-    # rank the table
+    # order data
     data = arrange(data, RTgroup)
     left_data = arrange(left_data, RTgroup)
-    # output table
-    format_export_data(result_dir_name, i, data, m, "sheet1", t)
-    format_export_data(result_dir_name, i, left_data, m, "sheet2", t)
+    # export data table
+    format_export_data(result_dir_name, i, data, m, "sheet1")
+    format_export_data(result_dir_name, i, left_data, m, "sheet2")
     i = i + 1
   }
-  # delete temp folder
+  # delet temp files
   unlink(dir_name, recursive = TRUE)
 }
 
-# execute = function () {
-#   print("choose files input")
-#   file = import(file.choose())
-#   print("input n")  #number of transitions allowed in a RT group
-#   n = as.numeric(readline())
-#   print("input m")   #product ion value
-#   m = readline()
-#   print("input threshold")
-#   t = readline()   #threshold in the method file
-#   prepare_data(file, n, m, t)
-# }
-
-#run execute()
-# execute()
+execute = function () {
+  print("choose files input")
+  file = import(file.choose())
+  print("input num")  #number of transitions allowed in a RT group
+  num = as.numeric(readline())
+  print("input m")   #product ion value
+  m = readline()
+  transitiongroup(file,num,m)
+}
