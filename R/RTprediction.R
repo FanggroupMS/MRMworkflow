@@ -8,6 +8,13 @@ packsneed <- c('rcdk','rcdklibs','randomForest','leaps','caret','corrplot',
                'mlr','dplyr','Metrics','ggpubr','ggplot2','miceadds')
 lapply(packsneed, require, character.only = TRUE)
 
+#prediction demo
+# load new data
+# newinput <- read.csv('OH_newdata_predictionRT.csv')
+# newsmilst <- newinput$smiles
+# a <- newsmilst[1:5]
+# newrt <- prediction(a,b='OH')
+
 #get prediction from new data
 prediction <- function(input,b){
   descs <- getdesc_nopp(input) #get mds without any data imputation
@@ -21,12 +28,6 @@ prediction <- function(input,b){
   output <- cbind('smiles'=input,'predictionRT'= predictionrt)
   return(output)
 }
-
-# load new data
-# newinput <- read.csv('OH_newdata_predictionRT.csv')
-# newsmilst <- newinput$smiles
-# a <- newsmilst[1:5]
-# newrt <- prediction(a,b='OH')
 
 #define functions for molecular descriptors without preprocess
 getdesc_nopp <- function(input){
