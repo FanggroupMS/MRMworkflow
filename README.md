@@ -1,4 +1,4 @@
-# CILMRM-workflow
+# ExPMRM-workflow
 
 To Install from R console:
 
